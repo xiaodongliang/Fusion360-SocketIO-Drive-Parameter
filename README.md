@@ -3,10 +3,10 @@
 
 Demo Usage
 -----------------------------------
-* Download [FusionApp.zip](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/FusionApp.zip)
-* Unzip the package and run install.bat. You might need to have administrator privilege.
+* Download [FusionApp.zip](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/FusionApp.zip). Unzip the package and run install.bat. You might need to have administrator privilege.
 * Launch and log in Fusion 360. Open a model that contains some parameters. Click Model>>Create>><Remote Parameter>
 * a dialog will pop out. Select one parameter you want to change, tick <Remote Enabled>.
+* 
   ![Picture](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/Help/fusion-menu.png) 
 * 
   ![Picture](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/Help/fusion-dialog.png) 
