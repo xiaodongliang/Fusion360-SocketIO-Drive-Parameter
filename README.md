@@ -12,7 +12,7 @@ Demo Usage
   ![Picture](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/Help/browser-web.png) 
 * 
   ![Picture](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/Help/iphone.jpg) 
-* you can also download [AndroidAPP.apk]() and install it upon an Android device. Similarly, input the user name who you want to connect. In the page of the app, zoom in / out and see model change in Fusion
+* you can also download [AndroidAPP.apk]() and install it upon an Android device. Similarly, input the user name who you want to connect. * In the page of the app, zoom in / out and see model change in Fusion
   ![Picture](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/Help/android.png) 
 
 
