@@ -3,8 +3,8 @@
 
 Demo Usage
 -----------------------------------
-* Download [FusionApp.zip](), Unzip the package and run install.bat. You might need to have administrator privilege.
-* Launch and log in Fusion 360. Open a model that contains some parameters. Click Model>>Create>>[Remote Parameter], a dialog will pop out. Select one parameter you want to change, tick [Remote Enabled].
+* Download [FusionApp.zip](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/FusionApp.zip), Unzip the package and run install.bat. You might need to have administrator privilege.
+* Launch and log in Fusion 360. Open a model that contains some parameters. Click Model>>Create>><Remote Parameter>, a dialog will pop out. Select one parameter you want to change, tick <Remote Enabled>.
   ![Picture](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/Help/fusion-menu.png) 
 * 
   ![Picture](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/Help/fusion-dialog.png) 
@@ -12,7 +12,7 @@ Demo Usage
   ![Picture](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/Help/browser-web.png) 
 * 
   ![Picture](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/Help/iphone.jpg) 
-* you can also download [AndroidAPP.apk]() and install it upon an Android device. Similarly, input the user name who you want to connect.  In the page of the app, zoom in / out and see model change in Fusion
+* you can also download [AndroidAPP.apk](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/AndroidAPP.apk) and install it upon an Android device. Similarly, input the user name who you want to connect.  In the page of the app, zoom in / out and see model change in Fusion
 * ![Picture](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/Help/android.png) 
 
 
