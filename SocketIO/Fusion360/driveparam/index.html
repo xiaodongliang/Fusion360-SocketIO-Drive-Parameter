@@ -1,0 +1,258 @@
+<!doctype html>
+<html>
+<head>
+    <title> Fusion 360 Socket.IO - Remote Drive Parameter  </title>     
+</head>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+<body> 
+	<div data-role="page" data-quicklinks="true">
+		 <div data-role="header" class="jqm-header">
+			<h1>Socket.IO Drive Parameter of Fusion 360</h1>
+  			<a href="https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter" class="ui-btn-right">GitHub</a>
+ 		</div><!-- /header -->
+		
+		<div role="main" class="ui-content jqm-content">
+			 
+			<p>Input the user name who has logged in Fusion 360. Drag circle circumference to see model change in Fusion 360
+			<p>User Name <input id = "txtUser" type="text" value="xiaodong.liang@autodesk.com"/>
+ 			<p>Percentage of Initial Value<input id = "txtValue" type="text" value="1"/>
+			 
+			<div>
+				<canvas id="canDrag" width="600" height="600" style="background-color: #ffffff"></canvas>
+			</div>
+			<input id = "btnTest" type="button" value=""  style="visibility:hidden" /> 
+		<div>
+	<div>
+</body>
+<script>
+  
+    var socket = io('http://adnxdsocket.herokuapp.com/');
+	
+	var canvas; 
+	var canvasContext;
+	var canvasCircle;
+	var mouseX,mouseY;	
+	var dragging = false;
+	var timer;
+	var targetRad;
+	var iniRad = 100
+ 
+	
+	function myCircle(cenX, cenY) {
+		this.centerX = cenX;
+		this.centerY = cenY;		 
+		this.color = "#FF0000";
+		this.radius = 100;
+	}
+	 
+
+ 	myCircle.prototype.hitTest = function(hitX,hitY) {
+		var dx = this.centerX - hitX;
+		var dy = this.centerY - hitY;		
+		var dis = Math.sqrt(dx*dx + dy*dy);
+		return( Math.abs(dis - this.radius ) < 20);
+	}
+
+ 	myCircle.prototype.drawToContext = function(theContext) {
+		theContext.strokeStyle =  "blue";
+		theContext.lineWidth = 20;
+		theContext.beginPath();
+		theContext.arc(this.centerX, this.centerY, this.radius, 0, 2 *Math.PI, false);
+		//theContext.closePath();
+		theContext.stroke();
+		//theContext.closePath();
+		//theContext.fill();
+	}   
+	 
+	function resizeCanvas(){
+		canvas.width=window.innerWidth;
+		canvas.height=window.innerHeight;
+		drawScreen();		 
+	}
+		
+	function init() {		 
+		 canvas  = document.getElementById("canDrag");
+		 canvas.width=window.innerWidth;
+		 canvas.height=window.innerHeight;
+		
+		 drawCircle();
+		 drawScreen();		 
+		 canvas.addEventListener("mousedown", mouseDownListener, false);
+		 canvas.addEventListener("touchstart", onTouchStart);
+ 		 //window.onresize=resizeCanvas; 
+	} 
+	
+	//this is for mouse down or touch start
+	function whendown(evt) {
+		var i; 
+		 
+		var bRect = canvas.getBoundingClientRect();
+		mouseX = (evt.clientX - bRect.left)*(canvas.width/bRect.width);
+		mouseY = (evt.clientY - bRect.top)*(canvas.height/bRect.height);
+		
+		if(canvasCircle.hitTest(mouseX,mouseY) ){
+		
+			window.addEventListener("mousemove", mouseMoveListener, false);
+			window.addEventListener("touchmove", onTouchMove, false);
+			
+			dragging = true;
+			
+			 timer = setInterval(onTimerTick, 1000/30);
+		}				
+		 
+		canvas.removeEventListener("mousedown", mouseDownListener, false);
+		canvas.removeEventListener("touchstart", onTouchStart, false);
+
+		
+		window.addEventListener("mouseup", mouseUpListener, false);
+		window.addEventListener("touchend", onTouchEnd, false);
+
+		
+		//code below prevents the mouse down from having an effect on the main browser window:
+		if (evt.preventDefault) {
+			evt.preventDefault();
+		} //standard
+		else if (evt.returnValue) {
+			evt.returnValue = false;
+		} //older IE
+		
+		return false;
+	}
+	
+	//when touch on mobile
+	function onTouchStart(evt) {
+		var screenPoint = {
+			clientX: evt.changedTouches[0].clientX,
+			clientY: evt.changedTouches[0].clientY
+		};
+		//alert('touch');
+		whendown(screenPoint);
+	}
+
+	//when mouse click on web
+	function mouseDownListener(evt) {
+		
+		 
+		whendown(evt);
+	}
+	
+	//this is for mouse up or touch end
+	function whenup(evt) {
+		canvas.addEventListener("mousedown", mouseDownListener, false);
+		canvas.addEventListener("touchstart", onTouchStart);
+
+		window.removeEventListener("mouseup", mouseUpListener, false);
+		window.removeEventListener("touchend", onTouchEnd, false);
+
+		
+		if (dragging) {
+			dragging = false;
+			window.removeEventListener("mousemove", mouseMoveListener, false);
+					window.removeEventListener("touchmove", onTouchMove, false);
+
+			 
+			 targetRad = iniRad; 
+			 drawScreen();	
+		}
+	}
+	
+	//for mouse up on web
+	function mouseUpListener(evt) {
+		whenup(evt);
+	}
+	
+	//for touch end on mobile
+	function onTouchEnd(evt) {
+		whenup(evt);
+	}
+	
+	//for mouse move on web and touch move on mobile
+	function whenmove(evt){
+	
+		//getting mouse position correctly 
+		var bRect = canvas.getBoundingClientRect();
+		mouseX = (evt.clientX - bRect.left)*(canvas.width/bRect.width);
+		mouseY = (evt.clientY - bRect.top)*(canvas.height/bRect.height); 
+		
+		var dx = canvasCircle.centerX - mouseX;
+		var dy = canvasCircle.centerY - mouseY;		
+		targetRad = Math.sqrt(dx*dx + dy*dy);   
+		drawScreen();		
+		
+	}
+	//for mouse move on web
+	function onTouchMove(evt) { 
+		var screenPoint = {
+			clientX: evt.changedTouches[0].clientX,
+			clientY: evt.changedTouches[0].clientY
+		};
+		//alert('touch');
+		whenmove(screenPoint);
+	}
+
+	
+	//for mouse move on web
+	function mouseMoveListener(evt) { 		
+ 
+		whenmove(evt);
+	}
+
+	
+	function onTimerTick() {
+		 
+		 canvasCircle.radius = targetRad; 
+		 
+		var user = $('#txtUser').val();
+        var newv = targetRad/iniRad;
+		$('#txtValue').val(newv);
+        socket.emit('fusion360', {user:user,newv:newv});
+		
+		//stop the timer when the target position is reached (close enough)
+		if (!dragging) {			
+			//stop timer:
+			clearInterval(timer);
+		}
+		drawScreen();
+	}
+	
+	
+	function drawCircle() { 
+
+		var radius = canvas.width / 8.0;
+		iniRad = radius;
+		var centerX = canvas.width /2.0;
+		var centerY = canvas.height /2.0;
+	 
+ 		if(canvas.getContext){  
+ 			canvasContext = canvas.getContext("2d");   
+			canvasCircle = new myCircle(centerX, centerY); 
+			
+			canvasCircle.radius = radius;
+			canvasCircle.color = "rgba(1,0,0,0.5)";
+
+			
+		} 
+	}
+	
+	function drawScreen() {
+		//bg
+		canvasContext.fillStyle = "#000000	";
+		canvasContext.fillRect(0,0,canvas.width,canvas.height);
+	 
+		canvasCircle.drawToContext(canvasContext);		 
+	}
+	
+	init(); 
+	
+ 
+   
+	
+	  
+ 
+</script>
+
+</html>

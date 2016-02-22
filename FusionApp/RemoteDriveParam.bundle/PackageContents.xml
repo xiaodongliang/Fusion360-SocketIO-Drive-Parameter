@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" AutodeskProduct="Fusion360" Name="Remote Drive Parameter" Description="This is the app that retrieve the data which is emitted from socket server, and update the parameter accordingly." AppVersion="1.0.0" FriendlyVersion="1.0.0" ProductType="Application" SupportedLocales="Enu" AppNameSpace="appstore.exchange.autodesk.com" Author="Autodesk" ProductCode="{2a032705-66bb-4653-af14-8c312b88d5b2}" UpgradeCode="{cbbeeada-5f7c-49ba-ba6e-8577ab3f62f4}" OnlineDocumentation="https://raw.githubusercontent.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/master/README.md">
+  <CompanyDetails Name="Autodesk" Email="fusion.apps@autodesk.com" Url="www.autodesk.com" />
+  <RuntimeRequirements OS="Win64|MacOS" Platform="Fusion360" />
+  <Components>
+    <RuntimeRequirements OS="Win64|MacOS" Platform="Fusion360" SeriesMin="2.0.1482"  />
+    <ComponentEntry AppName="Remote Drive Parameter" Version="1.0.0" ModuleName="./Contents/RemoteDriveParam.manifest" AppDescription="This is the app that retrieve the data which is emitted from socket server, and update the parameter accordingly." />
+  </Components>
+</ApplicationPackage>
