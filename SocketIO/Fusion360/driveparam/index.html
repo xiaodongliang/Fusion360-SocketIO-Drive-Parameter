@@ -39,7 +39,8 @@
 	var dragging = false;
 	var timer;
 	var targetRad;
-	var iniRad = 100
+	var iniRad = 100;
+	var lastRad = 100;
  
 	
 	function myCircle(cenX, cenY) {
@@ -203,14 +204,19 @@
 
 	
 	function onTimerTick() {
-		 
-		 canvasCircle.radius = targetRad; 
-		 
-		var user = $('#txtUser').val();
-        var newv = targetRad/iniRad;
-		$('#txtValue').val(newv);
-        socket.emit('fusion360', {user:user,newv:newv});
 		
+       if(Math.abs(lastRad - targetRad) > 0.00001)
+		{
+		  canvasCircle.radius = targetRad; 
+		 
+			var user = $('#txtUser').val();
+			var newv = targetRad/iniRad;
+			
+			socket.emit('fusion360', {user:user,newv:newv});
+			//$('#txtValue').val(newv);
+		}
+		lastRad = targetRad;
+
 		//stop the timer when the target position is reached (close enough)
 		if (!dragging) {			
 			//stop timer:
@@ -218,6 +224,10 @@
 		}
 		drawScreen();
 	}
+	
+	socket.on($('#txtUser').val(), function(msg){
+			  $('#txtValue').val(msg);
+           });
 	
 	
 	function drawCircle() { 

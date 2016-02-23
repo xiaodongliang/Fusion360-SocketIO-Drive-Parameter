@@ -166,33 +166,44 @@ function run(context) {
 
         var onCommandCreatedOnPanel = function(args) {
             try {
+               
+               //for the addin that is loaded on startup, current product will be null
+               //when swithching the default document to the other. So try to get it again.
+               product = app.activeProduct;
+               design = adsk.fusion.Design(product);
+
                 var command = args.command;
                 command.execute.add(onCommandExecuted);
                 command.inputChanged.add(onInputChanged);
+               
 
                 var commandInputs_ = command.commandInputs;
 				
-				var dropDownCommandInput_ = commandInputs_.addDropDownCommandInput('paramDropdown', 'Parameters',   adsk.core.DropDownStyles.LabeledIconDropDownStyle);
+				var dropDownCommandInput_ = commandInputs_.addDropDownCommandInput('paramDropdown', 'Parameters',                                               adsk.core.DropDownStyles.LabeledIconDropDownStyle);
+             
 				var dropDownItems_ = dropDownCommandInput_.listItems;
-				
+				 
 				var paramsList = design.allParameters;
+                
 				for(var index = 0 ;index < paramsList.count ;index ++){
 					if(index ==0)
-						dropDownItems_.add(paramsList.item(index).name, true);
-					else
+                        dropDownItems_.add(paramsList.item(index).name, true); 
+					else 
 						dropDownItems_.add(paramsList.item(index).name, false);
+                     
 				} 
-				
-				commandInputs_.addBoolValueInput('toggleSocket', 'Remote Enabled', true);				
+				commandInputs_.addBoolValueInput('toggleSocket', 'Remote Enabled', true);		
+                                    
                 var currentParamValueInput = 
 						commandInputs_.addValueInput('currentParamValue', 'Value', 'm',               
                                                      adsk.core.ValueInput.createByString('0.0 m'));
-				
-				if(paramsList.count >0)
-                {currentParamValueInput.value = paramsList.item(0).value;
-            }
-				 
+				        
+				if(paramsList.count >0){
+                    currentParamValueInput.value = paramsList.item(0).value;
+                }
+			 
                 currentParamValueInput.isEnabled = false;
+                
  
             } catch (e) {
                 ui.messageBox('Panel command created failed: ' + errorDescription(e));
