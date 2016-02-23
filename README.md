@@ -3,6 +3,7 @@
 
 Demo Usage
 -----------------------------------
+* [![ScreenShot](video)](https://knowledge.autodesk.com/community/screencast/314afb48-80c6-4cac-a859-27404276bfa5)
 * Download [FusionApp.zip](https://github.com/xiaodongliang/Fusion360-SocketIO-Drive-Parameter/blob/master/FusionApp.zip). Unzip the package and run install.bat. You might need to have administrator privilege.
 * Launch and log in Fusion 360. Open a model that contains some parameters. Click Model>>Create>>Remote Parameter
 * a dialog will pop out. Select one parameter you want to change, tick Remote Enabled.
